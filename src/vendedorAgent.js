@@ -14,12 +14,16 @@ function VendedorAgent(id, props) {
   // add a traffic conversation with comprador
   this.listen('sale')
     .listen((message, context) => {
-      console.log(this.id, this.props, 'before');
-      this.money = this.props.price;
-      this.props = {};
-      console.log(this.id, this.props, 'after');
-      console.log(this.id, this.money, 'money');
-      return 'Sale done with success';
+      if (this.props) {
+        console.log(this.id, this.props, 'before');
+        this.money = this.props.price;
+        this.props = null;
+        console.log(this.id, this.props, 'after');
+        console.log(this.id, this.money, 'money');
+        return { status: true, response: 'Sale done with success', money: this.money };
+      } else {
+        return { status: false, response: 'Sorry, the proudcty the product has been sold' };
+      }
     })
     .tell((message) => {
       return message;

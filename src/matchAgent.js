@@ -44,7 +44,7 @@ MatchAgent.prototype.search = function search(params) {
         })
         .listen((message, context) => {
           if (message) {
-            agentsWished.push({ agent: context.from, product: message });
+            agentsWished.push({ name: context.from, product: message });
           }
           if (this.props[Object.keys(this.props)[Object.keys(this.props).length - 1]].name === context.from) {
             resolve(agentsWished);

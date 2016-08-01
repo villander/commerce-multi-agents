@@ -21,16 +21,19 @@ CompradorAgent.prototype = Object.create(eve.Agent.prototype);
 CompradorAgent.prototype.constructor = CompradorAgent;
 
 // have a conversation with an other agent
-CompradorAgent.prototype.sale = function sale(agents) {
-  this.tell(agents[0].agent, 'sale')
+CompradorAgent.prototype.sale = function sale(agent) {
+  this.tell(agent.name, 'sale')
     .tell((message, context) => {
       console.log(this.id, this.props.money, 'before');
-      this.props.money -= agents[0].product.price;
-      console.log(this.id, this.props.money, 'after');
-      return agents[0];
+      return agent;
     })
-    .listen(function (message, context) {
-      console.log(context.from + ': ' + message);
+    .listen((message, context) => {
+      console.log(context.from + ': ' + message.response);
+      if (message.status) {
+        this.props.money -= message.money;
+      }
+      console.log(this.id, this.props.money, 'after');
+      return message;
     });
 };
 
